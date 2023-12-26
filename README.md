@@ -1,3 +1,13 @@
+# 写在前面
+该项目fork自https://github.com/gdyszy/yszyun-pz-app ,原版的项目前端代码是免费开源的，后端是付费闭源的。
+本人基于免费开源版的前端项目，适配出对应的 **后台前端**、**服务端**。
+
+- 前台前端：https://github.com/wujingquan/yszyun-pz-app
+- 后台前端：<br>技术栈：vite4.x/vue-cli5.x + vue3.x + ant-design-vue4.x + typescript hooks <br>项目地址：https://github.com/wujingquan/vue3-antdv-admin
+- 服务端：<br>技术栈：Node.js + NestJS + Fastify + MySQL + TypeORM + Redis + JWT + Swagger <br>项目地址：https://github.com/wujingquan/nest-admin
+
+如需原版的后端代码，请滚动到页脚联系原版的官方人员购买。
+
 <h1> 优势智能舒心陪诊APP </h1>
 
 # 产品简介
