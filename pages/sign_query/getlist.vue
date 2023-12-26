@@ -76,7 +76,7 @@
 			//删除就诊人信息
 			deleteConsumer(){
 				this.commHttpRequest(t.home.deleteconsumer, {consumer_id: this.id},'post', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						this.remindMsg(res.data.msg);
 						uni.redirectTo({
 							url:'/pages/sign_query/index'

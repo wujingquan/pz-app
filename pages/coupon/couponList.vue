@@ -196,9 +196,9 @@
 					page_num: navItem.current_page,
 					page_list_num: 10
 				}, 'get', true, (res) => {
-					if (res.data.code === 10000 ){
+					if (res.data.code === 200 ){
 						navItem.current_page = res.data.page_num; //当前页码
-						let  page_num = Math.ceil(res.data.data.count/res.data.data.page_list_num);
+						let  page_num = Math.ceil(res.data.data.total/res.data.data.page_list_num);
 						if (page_num <= res.data.data.page_num) {
 							navItem.loadingType = 'noMore';
 						} else {

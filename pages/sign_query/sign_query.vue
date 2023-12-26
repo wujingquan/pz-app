@@ -126,7 +126,7 @@
 				this.commHttpRequest(t.home.getConsumerInfo, {
 					consumer_id: consumer_id
 				}, 'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						this.baseFormData = res.data.data
 					}
 				})
@@ -136,7 +136,7 @@
 					if(this.consumer_id){
 						this.baseFormData = Object.assign(this.baseFormData, {consumer_id: this.consumer_id})
 						this.commHttpRequest(t.home.editconsumer, this.baseFormData, 'post', true, (res) => {
-							if (res.data.code === 10000) {
+							if (res.data.code === 200) {
 								this.remindMsg(res.data.msg);
 								let routes = getCurrentPages();
 								let prePage = routes[routes.length - 2];
@@ -148,7 +148,7 @@
 						})
 					}else{
 						this.commHttpRequest(t.home.addconsumer, this.baseFormData, 'post', true, (res) => {
-							if (res.data.code === 10000) {
+							if (res.data.code === 200) {
 								this.remindMsg(res.data.msg);
 								let routes = getCurrentPages();
 								let prePage = routes[routes.length - 2];

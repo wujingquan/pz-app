@@ -1,9 +1,8 @@
-//这个文件修改域名
-var e = "https://pz.yszyun.com",
-mapkey= '', // 必填
-	r = {
-		uurl: e,
-		qqmapkey:mapkey,
+import config from "./config";
+
+const	r = {
+		uurl: config.baseUrl,
+		qqmapkey:config.mapKey,
 		home: {
 			getswiperlist: "/v1.index/get_swiper_list",
 			getnavlist: "/v1.index/get_nav_list",
@@ -46,7 +45,7 @@ mapkey= '', // 必填
 			getrefundlist: "/v1.member/get_refund_list",
 			saveinfo: "/v1.index/save_info"
 		},
-		upload: e + "/api/upload/upload_file",
-		saveinfo: e + "/api/v1.index/save_info"
+		upload: config.baseUrl + "/api/upload/upload_file",
+		saveinfo: config.baseUrl + "/api/v1.index/save_info"
 	};
 module.exports = r;

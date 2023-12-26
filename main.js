@@ -25,7 +25,7 @@ Vue.prototype.commHttpRequest = function(url, params, method, loading = true, ca
 		header: header,
 		data: params,
 		success: res => {
-			if (res.data.code === 10000) {
+			if (res.data.code === 200) {
 				callback(res);
 			} else if (res.data.code === 10399) {
 				uni.showToast({

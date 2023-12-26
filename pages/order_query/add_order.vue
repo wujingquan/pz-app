@@ -248,7 +248,7 @@
 					page_num: 1,
 					page_list_num: 10
 				}, 'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						for (var i = 0; i < res.data.data.list.length; i++) {
 							const cprice = Number(this.cprice)
 							const price = Number(this.price)
@@ -315,7 +315,7 @@
 						server_name: this.servername,
 						page_num: 1,
 						page_list_num: 10},'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						this.hospitalRange = res.data.data.list
 						for (var i = 0; i < res.data.data.list.length; i++) {
 							if(this.baseFormData.hospital_id == res.data.data.list[i].hospital_id){
@@ -331,7 +331,7 @@
 					page_num: 1,
 					page_list_num: 10
 				}, 'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						this.peopleRange = res.data.data.list
 					}
 				})

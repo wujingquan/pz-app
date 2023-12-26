@@ -25,7 +25,7 @@
 					class="tui-banner-swiper" :circular="true" previous-margin="60rpx" next-margin="60rpx"
 					@change="change">
 					<swiper-item v-for="(item, index) in banner" :key="index" class="tui-banner-item">
-						<image :src="uurl+item.images" class="tui-slide-image "
+						<image :src="item.image" class="tui-slide-image "
 							:class="[bannerCurrent != index ? 'tui-banner-scale' : '']" mode="scaleToFill" lazy-load
 							></image>
 					</swiper-item>
@@ -137,20 +137,20 @@
 			// #endif
 		},
 		onShow() {
-			if(this.cityid == 0){
-				// #ifdef APP-PLUS
-				this.getLocation();
-				// #endif
-				// #ifdef MP-WEIXIN
-				this.getAuthorize();
-				// #endif
-			}
+			// if(this.cityid == 0){
+			// 	// #ifdef APP-PLUS
+			// 	this.getLocation();
+			// 	// #endif
+			// 	// #ifdef MP-WEIXIN
+			// 	this.getAuthorize();
+			// 	// #endif
+			// }
 			setTimeout(() => {
 				this.getBanner();
 				this.getClassify();
-				let userinfo = uni.getStorageSync('userinfo');
+				// let userinfo = uni.getStorageSync('userinfo');
 				//新用户领券
-				this.getAutoSendCoupon();
+				// this.getAutoSendCoupon();
 				/* if (userinfo.new_user == true) {
 					this.getAutoSendCoupon();
 				} */
@@ -195,7 +195,7 @@
 			// 获取导航列表
 			getClassify() {
 				this.commHttpRequest(t.home.getnavlist, {}, 'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						this.classify = res.data.data
 					}
 				})
@@ -212,7 +212,7 @@
 						}
 						_this.commHttpRequest(t.home.getcitylist, {page_num: 1,
 								page_list_num: 100},'get', true, (res) => {
-							if (res.data.code === 10000) {
+							if (res.data.code === 200) {
 								for (var i = 0; i < res.data.data.list.length; i++) {
 									if(res.data.data.list[i].city_name.split("市")[0] === _this.city){
 										_this.cityid = res.data.data.list[i].id
@@ -230,7 +230,7 @@
 				this.commHttpRequest(t.home.getlist, {city_id: this.cityid,
 						page_num: 1,
 						page_list_num: 10},'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						this.newsArr = res.data.data.list
 					}
 				})
@@ -238,8 +238,8 @@
 			// 获取轮播图
 			getBanner() {
 				this.commHttpRequest(t.home.getswiperlist, {}, 'get', true, (res) => {
-					if (res.data.code === 10000) {
-						this.banner = res.data.data
+					if (res.data.code === 200) {
+						this.banner = res.data.data.items
 					}
 				})
 			},
@@ -346,7 +346,7 @@
 							   _this.city = mapdata.city.split("市")[0];
 							   _this.commHttpRequest(t.home.getcitylist, {page_num: 1,
 							   		page_list_num: 100},'get', true, (res) => {
-							   	if (res.data.code === 10000) {
+							   	if (res.data.code === 200) {
 							   		for (var i = 0; i < res.data.data.list.length; i++) {
 							   			if(res.data.data.list[i].city_name.split("市")[0] === _this.city){
 							   				_this.cityid = res.data.data.list[i].id

@@ -33,7 +33,7 @@
 					page_num: this.page,
 					page_list_num: this.limit
 				}, 'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						this.datas = res.data.data.list
 					}
 				})
