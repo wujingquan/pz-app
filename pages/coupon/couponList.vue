@@ -110,6 +110,8 @@
 	
 	import {timeStamp} from '@/utils/time.js';
 	var t = require("@/api.js");
+	const OFFSET = 0
+	const LIMIT = 10
 	export default {
 		
 		data() {
@@ -120,21 +122,21 @@
 						status: 1,
 						text: '未使用',
 						loadingType: 'more',
-						current_page: 1,
+						current_offset: OFFSET,
 						cardList: []
 					},
 					{
 						status: 2,
 						text: '已使用',
 						loadingType: 'more',
-						current_page: 1,
+						current_offset: OFFSET,
 						cardList: []
 					},
 					{
 						status: 3,
 						text: '已过期',
 						loadingType: 'more',
-						current_page: 1,
+						current_offset: OFFSET,
 						cardList: []
 					}
 				],
@@ -192,29 +194,18 @@
 				navItem.loadingType = 'loading';
 				// 获取列表
 				this.commHttpRequest(t.coupon.getusercouponlist, {
-					status: index,
-					page_num: navItem.current_page,
-					page_list_num: 10
+					status,
+					offset: navItem.current_offset,
+					limit: LIMIT
 				}, 'get', true, (res) => {
 					if (res.data.code === 200 ){
-						navItem.current_page = res.data.page_num; //当前页码
-						let  page_num = Math.ceil(res.data.data.total/res.data.data.page_list_num);
-						if (page_num <= res.data.data.page_num) {
-							navItem.loadingType = 'noMore';
+						if ((res.data.data.offset + res.data.data.limit) < res.data.data.count) {
+							navItem.loadingType = 'more'
+							navItem.current_offset += LIMIT
 						} else {
-							navItem.loadingType = 'more';
-							navItem.current_page++;
+							navItem.loadingType = 'noMore'
 						}
-						let cardList = res.data.data.list.filter(item => {
-							if (status === 1) {
-								//0为全部订单
-								return item;
-							}
-							return Number(item.status) === status;
-						});
-						cardList.forEach(item => {
-							navItem.cardList.push(item);
-						});
+						navItem.cardList.push(...res.data.data.items)
 						//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 						this.$set(navItem, 'loaded', true);
 					}else {

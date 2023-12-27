@@ -101,6 +101,8 @@
 <script>
 	var t = require("@/api.js");
 	import {timeStamp} from '@/utils/time.js';
+	const OFFSET = 0;
+	const LIMIT = 10;
 	export default {
 		data() {
 			return {
@@ -110,7 +112,7 @@
 						status: 1,
 						text: '领券中心',
 						loadingType: 'more',
-						current_page: 1,
+						current_offset: OFFSET,
 						cardList: []
 					}
 				],
@@ -156,27 +158,18 @@
 				navItem.loadingType = 'loading';
 				// 获取列表
 				this.commHttpRequest(t.coupon.getcancouponlist, {
-					page_num: navItem.current_page,
-					page_list_num: 10
+					offset: navItem.current_offset,
+					limit: LIMIT
 				}, 'get', true, (res) => {
-					let  page_num = Math.ceil(res.data.data.count/res.data.data.page_list_num);
 					if (res.data.code == 200 ){
-						navItem.current_page = res.data.data.page_num; //当前页码
-						if (page_num <= res.data.data.page_num) {
-							navItem.loadingType = 'noMore';
+						if ((res.data.data.offset + res.data.data.limit) < res.data.data.count) {
+							navItem.loadingType = 'more'
+							navItem.current_offset += LIMIT
 						} else {
-							navItem.loadingType = 'more';
-							navItem.current_page++;
+							navItem.loadingType = 'noMore'
 						}
-						let cardList = res.data.data.list.filter(item => {
-							item = Object.assign(item, {
-								state: false
-							});
-							return Number(item.status) === status;
-						});
-						cardList.forEach(item => {
-							navItem.cardList.push(item);
-						});
+				
+						navItem.cardList.push(...res.data.data.items);
 						this.$set(navItem, 'loaded', true);
 					}else {
 						// this.loading = false
