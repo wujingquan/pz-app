@@ -231,7 +231,7 @@
 						page_num: 1,
 						page_list_num: 10},'get', true, (res) => {
 					if (res.data.code === 200) {
-						this.newsArr = res.data.data.list
+						this.newsArr = res.data.data.items
 					}
 				})
 			},

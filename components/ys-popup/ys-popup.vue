@@ -3,7 +3,7 @@
 		<view class="mask"></view>
 		<view v-if="type==1"><!--绑定微信-->
 			<view class="wxbox">
-				<view class="weixin"><image src="../static/bind_wx.png"></image></view>
+				<!-- <view class="weixin"><image src="../static/bind_wx.png"></image></view> -->
 				<view class="tips">为了您的账号安全，请绑定微信，绑定后可快捷登录</view>
 				<view class="btn" @click="eventClick">立即绑定</view>
 				<view class="close" @click="close"><icon type="clear" size="26"/></view>
@@ -34,7 +34,7 @@
 		</view>
 		<view v-else-if="type==4">
 			<view class="updateBox">
-				<view class="tubiao"><image src="../static/ic_ar.png"></image></view>
+				<!-- <view class="tubiao"><image src="../static/ic_ar.png"></image></view> -->
 				<view class="wrapbox">
 					<view class="version">发现新版本{{version}}</view>
 					<view class="desc-t">本次更新内容：</view>
@@ -49,7 +49,7 @@
 		</view>
 		<view v-else-if="type==5">
 			<view class="updateBox1">
-				<image src="../static/update_bg.png"></image>
+				<!-- <image src="../static/update_bg.png"></image> -->
 				<view class="wrapBox">
 					<view class="version">发现新版本<view>v{{version}}</view></view>
 					<view class="desc-t">更新内容：</view>

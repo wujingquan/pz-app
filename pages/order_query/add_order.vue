@@ -17,7 +17,7 @@
 				<uni-forms ref="baseForm" :rules="baseFormrules" :model="baseFormData" labelWidth="80px">
 					<uni-forms-item label="就诊医院" required name="name">
 						<view class="picker picker-content">
-							<picker @change="hospitalChange" :value="hospitalIndex" :range="hospitalRange" rangeKey="hospital_name" style="width: 100%">
+							<picker @change="hospitalChange" :range="hospitalRange" rangeKey="hospital_name" style="width: 100%">
 								<view v-if="!hospital_name"  class="no_hospital_name" >
 									<text class="margin-left-xs">请选择</text>
 								</view>
@@ -52,7 +52,7 @@
 				</uni-forms>
 			</view>
 		</uni-section>
-		<uni-section title="优惠券" type="line" v-if="baseFormData.consumer_id != 0">
+		<uni-section title="优惠券" type="line" v-if="baseFormData.consumer_id != 0 && couponRange.length">
 			<view class="example">
 				<uni-forms ref="baseForm" :rules="baseFormrules" :model="baseFormData" labelWidth="80px">
 					<uni-forms-item label="优惠券" name="coupon">
@@ -245,17 +245,12 @@
 				var that = this;
 				this.commHttpRequest(t.coupon.getusercouponlist, {
 					status: 1,
-					page_num: 1,
-					page_list_num: 10
+					offset: 1,
+					limit: 10
 				}, 'get', true, (res) => {
 					if (res.data.code === 200) {
-						for (var i = 0; i < res.data.data.list.length; i++) {
-							const cprice = Number(this.cprice)
-							const price = Number(this.price)
-							if((this.cprice && cprice >= Number(res.data.data.list[i].low_limit_price)) || price >= Number(res.data.data.list[i].low_limit_price)){
-								this.couponRange.push(res.data.data.list[i])
-							}
-						}
+						const filtered = res.data.data.items.filter(item => this.price >= item.low_limit_price)
+						this.couponRange.push(...filtered)
 					}
 				})
 			},
@@ -276,22 +271,24 @@
 				this.cprice = (parseFloat(this.price) - parseFloat(this.couponRange[e.target.value].price)).toFixed(2);
 			},
 			hospitalChange(e){
-				this.hospitalIndex = e.target.value;
-				this.hospital_name = this.hospitalRange[e.target.value].hospital_name;
-				this.baseFormData.hospital_id = this.hospitalRange[e.target.value].hospital_id;
+				const value = Number(e.target.value)
+				const hospital = this.hospitalRange[value]
+				console.log(value, hospital)
+				this.hospital_name = hospital.hospital_name;
+				this.baseFormData.hospital_id = hospital.id;
 				this.cprice = ''   //切换医院，清除总金额
 				this.baseFormData.yuyuetime = Date.now()   //切换医院，清除就诊时间，因为可能会产生夜间服务费   
-				this.baseFormData.server_id = this.hospitalRange[e.target.value].id;
-				if (this.hospitalRange[e.target.value].discount_price != '0.00'){
-					this.price = this.hospitalRange[e.target.value].discount_price
+				this.baseFormData.server_id = hospital.id;
+				if (hospital.discount_price != '0.00'){
+					this.price = hospital.discount_price
 				}else{
-					this.price = this.hospitalRange[e.target.value].price
+					this.price = hospital.price
 				}
-				if(this.hospitalRange[e.target.value].night_other_money != '0.00'){
-					this.nightmoney = this.hospitalRange[e.target.value].night_other_money
-					this.starttime = this.hospitalRange[e.target.value].night_start_time
-					this.endtime = this.hospitalRange[e.target.value].night_end_time
-					this.nighttype = this.hospitalRange[e.target.value].night_end_time_type
+				if(hospital.night_other_money != '0.00'){
+					this.nightmoney = hospital.night_other_money
+					this.starttime = hospital.night_start_time
+					this.endtime = hospital.night_end_time
+					this.nighttype = hospital.night_end_time_type
 				}else{
 					this.nightmoney = ''
 					this.starttime = ''
@@ -301,10 +298,14 @@
 			},
 			// 切换就诊人,带出就诊人电话
 			pepchange(e){
-				this.peopleIndex = e.target.value;
-				this.people_name = this.peopleRange[e.target.value].name;
-				this.baseFormData.consumer_id = this.peopleRange[e.target.value].id;
-				this.baseFormData.mobile = this.peopleRange[e.target.value].mobile;
+				const value = Number(e.target.value)
+				this.peopleIndex = value;
+				const people = this.peopleRange[value]
+				this.people_name = people.name;
+				this.baseFormData.name = people.name
+				this.baseFormData.age = people.age
+				this.baseFormData.consumer_id = people.id;
+				this.baseFormData.mobile = people.mobile;
 				// 获取优惠券
 				this.getUserCouponList();
 			},
@@ -401,19 +402,19 @@
 				})			
 			},
 			submit(ref) {
-				if(this.baseFormData.hospital_id == 0){
+				if(!this.baseFormData.hospital_id){
 					this.remindMsg(`请选择就诊医院`);
 					return
 				}
-				if(this.baseFormData.yuyuetime == ''){
+				if(this.baseFormData.yuyuetime === ''){
 					this.remindMsg(`请选择就诊时间`);
 					return
 				}
-				if(this.baseFormData.consumer_id == 0){
+				if(this.baseFormData.consumer_id === 0){
 					this.remindMsg(`请选择就诊人`);
 					return
 				}
-				if(this.baseFormData.address == ''){
+				if(this.baseFormData.address === ''){
 					this.remindMsg(`请填写服务地址`);
 					return
 				}

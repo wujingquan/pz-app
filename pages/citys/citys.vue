@@ -70,10 +70,10 @@
 		},
 		methods: {
 			getCityList() {
-				this.commHttpRequest(t.home.getcitylist, {page_num: 1,
-						page_list_num: 100},'get', true, (res) => {
+				this.commHttpRequest(t.home.getcitylist, {offset: 0,
+						limit: 10},'get', true, (res) => {
 					if (res.data.code === 200) {
-						this.hotCity = res.data.data.list
+						this.hotCity = res.data.data.items
 					}
 				})
 			},
