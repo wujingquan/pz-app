@@ -24,10 +24,10 @@
 		},
 		methods:{
 			getdisclaimerlist() {
-				this.commHttpRequest(t.home.getdisclaimerlist, {page_num: 1,
-								page_list_num: 10}, 'get', true, (res) => {
-					if (res.data.code === 10000) {
-						this.disclaimerlist = res.data.data.list
+				this.commHttpRequest(t.home.getdisclaimerlist, {offset: 0,
+								limit: 10}, 'get', true, (res) => {
+					if (res.data.code === 200) {
+						this.disclaimerlist = res.data.data.items
 					}
 				})
 			},

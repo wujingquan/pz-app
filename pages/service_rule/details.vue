@@ -33,7 +33,7 @@
 			// 异步加载
 			async loadData(data) {
 				this.commHttpRequest(t.home.getdisclaimerinfo, data, 'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						//详情正则
 						// res.data.data.content = res.data.data.content.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi, (match, capture) => {
 						// 	var img = `<img style="display: block; max-width: 100%;" src="${this.$wanlshop.oss(capture, 500, 0)}">`;
