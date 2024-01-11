@@ -17,7 +17,7 @@ Vue.prototype.commHttpRequest = function(url, params, method, loading = true, ca
 	let header = {
 		'Content-Type': 'application/x-www-form-urlencoded',
 		'timestamp': date,
-		'token': token
+		'Authorization': token
 	}
 	uni.request({
 		url: t.uurl + '/api' + url,
@@ -27,7 +27,7 @@ Vue.prototype.commHttpRequest = function(url, params, method, loading = true, ca
 		success: res => {
 			if (res.data.code === 200) {
 				callback(res);
-			} else if (res.data.code === 10399) {
+			} else if (res.data.code === 11001) {
 				uni.showToast({
 					title: '您未登录,请先登录',
 					icon: 'none'
@@ -38,12 +38,12 @@ Vue.prototype.commHttpRequest = function(url, params, method, loading = true, ca
 			}else if (res.data.code === 10390) {
 			}else if (res.data.code === 10001) {
 				uni.showModal({
-					title:res.data.msg
+					title:res.data.message
 				})
 			}else {
 				
 				uni.showToast({
-							title: res.data.msg,
+							title: res.data.message,
 							icon: 'none',
 							duration: 2000,	
 							});		

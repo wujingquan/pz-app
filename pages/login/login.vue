@@ -2,10 +2,17 @@
 	<view>
 		<view class="auth">
 			<view class="wanl-title">微信绑定登录</view>
-			<form>
+			<uni-forms ref="baseForm" :rules="baseFormrules" :model="baseFormData" labelWidth="100px">
 				<view class="oauth">
 					<view :class="item.name" class="cu-avatar lg round bg-white" v-for="(item, key) in providerList" @tap="tologin(item)" :key="key" ></view>
 				</view>
+				<uni-forms-item label="手机号码" required name="mobile">
+					<uni-easyinput v-model="baseFormData.mobile" placeholder="请填写手机号" type="number" maxlength="11"/>
+				</uni-forms-item>
+				<uni-forms-item label="短信验证码" required name="code">
+					<uni-easyinput v-model="baseFormData.code" placeholder="短信验证码" type="number" maxlength="11"/>
+				</uni-forms-item>
+				<button class="WeiXinLogin login" @tap="login">登录</button>
 				<button class="WeiXinLogin" @tap="tologin(WeiXinLoginMsg)">微信一键登录</button>
 				<!-- 同意服务条款 -->
 				<checkbox-group :class="checked == 1 ? 'shake-horizontal' : ''" class="auth-clause" @change="CheckboxChange">
@@ -14,7 +21,7 @@
 						我已阅读并同意<text @tap="onDetails(1, '服务条款')">用户协议</text>及<text @tap="onDetails(2, '隐私声明')">隐私权保护声明</text>
 					</view>
 				</checkbox-group>
-			</form>
+			</uni-forms>
 		</view>
 	</view>
 </template>
@@ -40,7 +47,31 @@
 					nonce:'',
 					headers:{'Content-Type':'application/x-www-form-urlencoded'}
 				},
-				
+				baseFormData: {
+					mobile: '',
+				},
+				baseFormrules: {
+					mobile: {
+						rules: [{
+							required: true,
+							errorMessage: '手机号不能为空'
+						}, {
+							minLength: 11,
+							maxLength: 11,
+							errorMessage: '手机号为11位数字',
+						}]
+					},
+					code: {
+						rules: [{
+							required: true,
+							errorMessage: '短信验证码不能为空'
+						}, {
+							minLength: 6,
+							maxLength: 6,
+							errorMessage: '短信验证码为6位数字',
+						}]
+					},
+				}
 			};
 		},
 		onLoad() {						
@@ -58,6 +89,25 @@
 			// #endif
 		},
 		methods: {
+			async login() {
+				// 手机号码登录
+				const res = await this.$refs['baseForm'].validate()
+				console.log('res', res)
+				this.commHttpRequest('/login', {
+					phone: res.mobile,
+					code: res.code
+				}, 'post', true, res => {
+					console.log('res', res)
+					uni.hideLoading();
+					if(res.data.code == 200) {
+						uni.setStorageSync('token', res.data.data.token)
+						uni.setStorageSync('userinfo', res.data.data.user_info)
+						uni.switchTab({
+							url: '/pages/tabBar/home/home'
+						})
+					}
+				})
+			},
 			onDetails(id, title) {
 				uni.navigateTo({
 					url: `/pages/service_rule/details?id=${id}&title=${title}`
@@ -262,6 +312,9 @@
 
 .oauth view {
 	border: 2rpx solid #FCF7E9;
+}
+.login {
+	margin-bottom: 20upx;
 }
 .WeiXinLogin{
 	color: #fff;

@@ -107,6 +107,7 @@
 				msgType: 'success',
 				avatar: '/static/nologin@3x.png',
 				gender: 0,
+				uid: '',
 				username: '',
 				post: '',
 				tel: '',
@@ -237,9 +238,10 @@
 			// 获取用户信息
 			getUserInfo() {
 				this.commHttpRequest(t.home.getuserinfo, {}, 'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						this.mstatus = res.data.data.member_status
 						this.username = res.data.data.nickname;
+						this.uid = res.data.data.id;
 						if(~res.data.data.avatar.indexOf('http')){
 							this.avatar = res.data.data.avatar;
 						}else{
@@ -321,18 +323,24 @@
 				});
 			},
 			sign_query: function() {
+				if (!this.uid && !this.username) {
+					return this.remindMsg('您未登录,请先登录');
+				}
 				uni.navigateTo({
 					url: "/pages/sign_query/index"
 				})
 			},
 			coupon: function() {
+				if (!this.uid && !this.username) {
+					return this.remindMsg('您未登录,请先登录');
+				}
 				uni.navigateTo({
 					url: "/pages/coupon/couponList"
 				})
 			},
 			score_query: function() {
 				const that = this;
-				if (!this.username) {
+				if (!this.uid && !this.username) {
 					this.remindMsg('您未登录,请先登录');
 				} else {
 					if (that.mstatus == 0) {
@@ -349,6 +357,9 @@
 				}
 			},
 			order_query: function(index) {
+				if (!this.uid && !this.username) {
+					return this.remindMsg('您未登录,请先登录');
+				}
 				try {
 					uni.setStorageSync('index', index);
 				} catch (e) {
