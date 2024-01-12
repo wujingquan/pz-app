@@ -35,6 +35,14 @@ Vue.prototype.commHttpRequest = function(url, params, method, loading = true, ca
 				uni.navigateTo({
 					url: '/pages/login/login'
 				})
+			} else if (res.data.code === 11002) {
+				uni.showToast({
+					title: res.data.message,
+					icon: 'none'
+				});
+				uni.navigateTo({
+					url: '/pages/login/login'
+				})
 			}else if (res.data.code === 10390) {
 			}else if (res.data.code === 10001) {
 				uni.showModal({
