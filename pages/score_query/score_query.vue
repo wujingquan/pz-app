@@ -125,9 +125,9 @@
 			// 上传身份证
 			succidcardImage(singlePic) {
 				this.uploadidcard.photoArr.unshift(singlePic);
-				this.uploadidcard.photo1Str = this.uploadidcard.photoArr[0].url;
+				this.uploadidcard.photo1Str = this.uploadidcard.photoArr[0].path;
 				if (this.uploadidcard.photoCount > 0) {
-					this.uploadidcard.photo2Str = this.uploadidcard.photoArr[1].url;
+					this.uploadidcard.photo2Str = this.uploadidcard.photoArr[1].path;
 				}
 			},
 			delidcardSuccess(singlePicArr) {
@@ -143,7 +143,7 @@
 			// 上传头像
 			successImage(singlePic) {
 				this.uploadImg.photoArr.unshift(singlePic);
-				this.uploadImg.photoStr = this.uploadImg.photoArr[0].url;
+				this.uploadImg.photoStr = this.uploadImg.photoArr[0].path;
 			},
 			deleteSuccess(singlePicArr) {
 				this.uploadImg.photoArr = singlePicArr;

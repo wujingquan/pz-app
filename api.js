@@ -45,7 +45,7 @@ const	r = {
 			getrefundlist: "/v1.member/get_refund_list",
 			saveinfo: "/v1.index/save_info"
 		},
-		upload: config.baseUrl + "/api/upload/upload_file",
+		upload: config.baseUrl + "/common/attachment",
 		saveinfo: config.baseUrl + "/api/v1.index/save_info"
 	};
 module.exports = r;
