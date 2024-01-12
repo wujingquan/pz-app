@@ -213,7 +213,7 @@
 					let date = Math.round(new Date() / 1000);
 					let token = uni.getStorageSync('token');
 					header = {
-						'Content-Type': 'application/x-www-form-urlencoded',
+						// 'Content-Type': 'application/x-www-form-urlencoded',
 						'timestamp': date,
 						'token': token
 					}
@@ -221,7 +221,7 @@
 				uni.uploadFile({
 					url: this.uploadUrl,
 					filePath: path,
-					name: 'image',
+					name: 'file',
 					header: header,
 					success: (uploadFileRes) => {
 						try{

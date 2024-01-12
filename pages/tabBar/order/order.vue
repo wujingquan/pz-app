@@ -128,11 +128,11 @@ export default {
 				page_list_num: 100,
 				status: index,
 			}, 'get', true, (res) => {
-				if (res.data.code === 10000) {
+				if (res.data.code === 200) {
 					// if(this.tabList[index].data.length === 0){
 						this.firstRequest = true;
 						setTimeout(()=>{
-							this.tabList[index].data = res.data.data.list
+							this.tabList[index].data = res.data.data.items
 							this.firstRequest = false;
 						}, 300);
 					// }

@@ -278,7 +278,7 @@
 				this.baseFormData.hospital_id = hospital.id;
 				this.cprice = ''   //切换医院，清除总金额
 				this.baseFormData.yuyuetime = Date.now()   //切换医院，清除就诊时间，因为可能会产生夜间服务费   
-				this.baseFormData.server_id = hospital.id;
+				this.baseFormData.server_id = hospital.server.id;
 				if (hospital.discount_price != '0.00'){
 					this.price = hospital.discount_price
 				}else{

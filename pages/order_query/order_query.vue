@@ -144,7 +144,7 @@
 			// 获取订单详情
 			getOrderInfo() {
 				this.commHttpRequest(t.order.getorderinfo, {order_id: this.orderid},'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						this.orderData = res.data.data
 					}
 				})
