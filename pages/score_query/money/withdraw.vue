@@ -61,6 +61,9 @@
 				// #ifdef MP-WEIXIN
 				client_type = 2;
 				// #endif
+				// #ifdef WEB
+				client_type = 3;
+				// #endif
 				if (this.money==null) {
 					this.remindMsg('请填写金额，再提现。');
 					this.loading = false;
