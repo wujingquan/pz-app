@@ -15,7 +15,7 @@ Vue.prototype.commHttpRequest = function(url, params, method, loading = true, ca
 	let date = Math.round(new Date() / 1000);
 	let token = uni.getStorageSync('token');
 	let header = {
-		'Content-Type': 'application/x-www-form-urlencoded',
+		// 'Content-Type': 'application/x-www-form-urlencoded',
 		'timestamp': date,
 		'Authorization': token
 	}

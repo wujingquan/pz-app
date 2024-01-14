@@ -12,7 +12,7 @@
 				</view>
 				<view >
 					<!-- <uni-easyinput v-model="money" @input="replaceInput"  trim="all" placeholder="请输入提现金额" type="number" maxlength="5" inputBorder="false"/> -->
-			<input type="number" maxlength="5" focus @input="replaceInput" placeholder="请输入提现金额"/>
+			<input type="number" focus @input="replaceInput" placeholder="请输入提现金额"/>
 				</view><!--  -->
 				<!-- <view class="text-lg wanl-gray-light" @tap="emptyInput" v-if="money">
 					<text class="wlIcon-shibai"></text>

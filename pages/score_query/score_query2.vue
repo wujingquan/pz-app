@@ -163,7 +163,7 @@
 			getmemberinfo() {
 				var that = this;
 				this.commHttpRequest(t.mine.getmemberinfo, {}, 'get', true, (res) => {
-					if (res.data.code === 10000) {
+					if (res.data.code === 200) {
 						var re = res.data;
 						that.name = re.data.name;
 						that.pic = t.uurl + re.data.avatar;

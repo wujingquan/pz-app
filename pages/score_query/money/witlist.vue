@@ -19,8 +19,8 @@
 				</view>
 				<view class="action">
 					<view class="cu-tag radius"
-						:class="item.audit_status == 1?'bg-green':item.audit_status==0?'bg-orange':'bg-red'">
-						{{statusList[item.audit_status].status}}
+						:class="item.audit_status === 1?'bg-green':item.audit_status===null?'bg-orange':'bg-red'">
+						{{statusList.find(s => s.value === item.audit_status).label}}
 					</view>
 				</view>
 			</view>
@@ -46,16 +46,24 @@
 		data() {
 			return {
 				dataList: [],
-				statusList: [{
-					status: '申请中'
-				}, {
-					status: '已通过'
-				}, {
-					status: '未通过'
-				}],
+				statusList: [
+					{
+						value: null,
+						label: '申请中',
+					},
+					{
+						value: 1,
+						label: '已通过',
+					},
+					{
+						value: 2,
+						label: '未通过',
+					}
+				],
+				limit: 10,
 				reload: false, //判断是否上拉
 				total: 0, //数据量
-				current_page: 1, //当前页码
+				current_offset: 0,
 				last_page: 1, //总页码
 				status: 'more',
 				contentText: {
@@ -75,11 +83,11 @@
 		},
 		onReachBottom() {
 			//判断是否最后一页
-			if (this.current_page >= this.last_page) {
+			if (this.current_offset + this.limit >= this.total) {
 				this.status = 'noMore';
 			} else {
 				this.reload = false;
-				this.current_page = Number(this.current_page) + 1; //页码+1
+				this.current_offset = this.current_offset + this.limit //页码+1
 				this.status = 'loading';
 				this.getrefundlist();
 			}
@@ -89,15 +97,14 @@
 			getrefundlist() {
 				var that = this;
 				this.commHttpRequest(t.mine.getrefundlist, {
-					page_num: this.current_page,
-					page_list_num: 10
+					offset: this.current_offset,
+					limit: 10
 				}, 'get', true, (res) => {
 					uni.stopPullDownRefresh();
-					this.dataList = this.reload ? res.data : this.dataList.concat(res.data.data.list); //数据 追加
+					this.dataList = this.reload ? res.data : this.dataList.concat(res.data.data.items); //数据 追加
 					this.total = res.data.data.count; //数据量
-					this.current_page = res.data.data.page_num; //当前页码
-					this.last_page = this.total / res.data.data.page_list_num; //总页码
-					this.status = res.total == 0 ? 'noMore' : 'more';
+					this.current_offset = res.data.data.offset; //当前页码
+					this.status = (this.current_offset + this.limit) >= this.total ? 'noMore' : 'more'
 				})
 			}
 			
